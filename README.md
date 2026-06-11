@@ -150,44 +150,6 @@ This project demonstrates core **Database Management System (DBMS)** concepts in
 | `payment_status` | VARCHAR(20) | DEFAULT 'Pending' | Paid or Pending |
 | `bill_date` | DATE | DEFAULT CURRENT_DATE | When bill was created |
 
-### Entity Relationship Diagram
-
-┌──────────────┐ ┌──────────────┐
-│ Patient │ │ Doctor │
-├──────────────┤ ├──────────────┤
-│ patient_id★ │ │ doctor_id★ │
-│ name │ │ name │
-│ age │ │ specialization│
-│ phone │ │ fee │
-└──────┬───────┘ └──────┬───────┘
-│ │
-│ 1:M │ 1:M
-▼ ▼
-┌──────────────────────────────┐
-│ Appointment │
-├──────────────────────────────┤
-│ appt_id★ │
-│ patient_id (FK→Patient) │
-│ doctor_id (FK→Doctor) │
-│ appt_date │
-│ status │
-└──────────────┬───────────────┘
-│
-│ 1:1
-▼
-┌──────────────────────────────┐
-│ Billing │
-├──────────────────────────────┤
-│ bill_id★ │
-│ patient_id (FK→Patient) │
-│ appt_id (FK→Appointment) │
-│ amount │
-│ payment_status │
-│ bill_date │
-└──────────────────────────────┘
-
-★ = Primary Key | FK = Foreign Key
-
 
 ### Relationships
 - **Patient (1) → (M) Appointment**: One patient can have many appointments
@@ -195,7 +157,6 @@ This project demonstrates core **Database Management System (DBMS)** concepts in
 - **Appointment (1) → (1) Billing**: One appointment generates exactly one bill
 
 ---
-
 ## 📊 SQL Queries Implemented
 
 ### 1. INNER JOIN - Display Appointments with Names
@@ -216,6 +177,7 @@ SELECT name, phone FROM Patient
 WHERE patient_id IN (
     SELECT patient_id FROM Billing WHERE payment_status = 'Pending'
 );
+
 SELECT 
     DATE_FORMAT(appt_date, '%M %Y') AS month,
     COUNT(*) AS total,
@@ -224,4 +186,199 @@ SELECT
 FROM Appointment
 GROUP BY YEAR(appt_date), MONTH(appt_date)
 ORDER BY YEAR(appt_date) DESC, MONTH(appt_date) DESC;
+
 SELECT COUNT(*) FROM Appointment WHERE DATE(appt_date) = CURDATE();
+
+💻 Installation Guide
+Prerequisites
+Software	Download Link	Purpose
+XAMPP	Apache Friends	Local server (Apache + MySQL)
+Browser	Chrome/Firefox/Edge	To run the application
+Code Editor (Optional)	VS Code	To modify code
+Step-by-Step Installation
+Step 1: Install XAMPP
+Download XAMPP from the official website
+
+Run the installer (default settings are fine)
+
+Launch XAMPP Control Panel
+
+Step 2: Start Services
+text
+[XAMPP Control Panel]
+☑️ Apache → Start (Port 80)
+☑️ MySQL  → Start (Port 3307)
+Step 3: Clone or Download Project
+Option A: Using Git
+
+bash
+git clone https://github.com/royaldev006/hospital-management-system.git
+Option B: Download ZIP
+
+Go to the GitHub repository
+
+Click "Code" → "Download ZIP"
+
+Extract the ZIP file
+
+Step 4: Move to htdocs Folder
+bash
+# Move the project folder to:
+C:\xampp\htdocs\hospital_system\
+Step 5: Import Database
+Open browser → http://localhost/phpmyadmin
+
+Click New → Create database: hospital_management
+
+Click Import tab
+
+Select the database.sql file (if included) or run the CREATE TABLE queries manually
+
+Click Go
+
+Step 6: Configure Database Connection
+Open config.php and verify settings:
+
+php
+$servername = "localhost:3307";  // MySQL port
+$username = "root";
+$password = "";                   // Your MySQL password
+$dbname = "hospital_management";
+Step 7: Run the Application
+Open browser and go to:
+
+text
+http://localhost/hospital_system/index.php
+
+🎮 How to Use
+Adding a New Patient
+Click "New Patient" button
+
+Fill in patient details (name, age, gender, phone, blood group, medical history)
+
+Click "Register Patient"
+
+Patient appears in the Patients table ✅
+
+Booking an Appointment
+Click "Book Appointment" button
+
+Select a Patient from dropdown
+
+Select a Doctor from dropdown
+
+Choose Date & Time
+
+Click "Book Appointment"
+
+Appointment appears in the schedule ✅
+
+Updating Appointment Status
+Go to Appointments Schedule table
+
+Click the dropdown in the Status column
+
+Select: Scheduled → Completed → Cancelled
+
+Bill is automatically generated when status becomes "Completed"
+
+Searching Records
+Type in the Search Bar at the top
+
+Results filter in real-time
+
+Shortcut: Press Ctrl+F to focus search
+
+Generating Reports
+Click "Reports" button
+
+View:
+
+Revenue by Doctor
+
+Monthly Appointment Statistics
+
+Deleting Records
+Find the record you want to delete
+
+Click the 🗑️ Delete button
+
+Confirm deletion
+
+🚀 Future Enhancements
+Feature	Description	Priority
+🔐 User Authentication	Role-based login (Admin, Doctor, Receptionist)	High
+📧 Email Notifications	Send appointment reminders via email	High
+📱 Patient Portal	Patients can book appointments online	Medium
+💳 Payment Gateway	Online bill payment integration	Medium
+📄 PDF Reports	Export reports as PDF documents	Medium
+🏥 Room/Bed Management	Track bed availability and assignments	Low
+💊 Prescription Module	Digital prescriptions linked to appointments	Low
+⭐ Rating System	Patients can rate doctors	Low
+
+📁 Project Structure
+text
+hospital_system/
+│
+├── config.php           # Database connection configuration
+├── index.php            # Main dashboard (all CRUD operations)
+├── style.css            # Modern responsive styling
+├── script.js            # Interactive JavaScript functions
+├── add_patient.php      # API to add new patients
+├── add_appointment.php  # API to book appointments
+├── update_status.php    # API to update appointment status
+├── delete_record.php    # API to delete records
+├── reports.php          # Analytics and reports page
+├── get_stats.php        # API for live statistics refresh
+└── README.md            # Project documentation (this file)
+
+Record is removed ✅
+
+🤝 Contributing
+Contributions, issues, and feature requests are welcome!
+
+Fork the repository
+
+Create your feature branch (git checkout -b feature/amazing-feature)
+
+Commit your changes (git commit -m 'Add some amazing feature')
+
+Push to the branch (git push origin feature/amazing-feature)
+
+Open a Pull Request
+
+📧 Contact & Author
+Name	royaldev006
+GitHub	@royaldev006
+Project Link	https://github.com/royaldev006/hospital-management-system
+Course	DBMS Mini Project
+Year	2026
+
+📜 License
+This project is for educational purposes as part of a DBMS Mini Project.
+
+You are free to use, modify, and distribute this code for learning purposes.
+
+🙏 Acknowledgments
+MySQL for the powerful database system
+
+PHP community for excellent documentation
+
+XAMPP for easy local development environment
+
+All open-source contributors
+
+⭐ Show Your Support
+If you found this project helpful, please give it a ⭐ on GitHub!
+
+📊 Project Statistics
+Metric	Value
+Tables	4
+Total Lines of Code	~1500
+PHP Files	9
+Database Queries	15+
+Development Time	2 weeks
+🔄 Last Updated
+June 11, 2026
+
+
